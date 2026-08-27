@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ماهوت | نقشه راه تبدیل اعتبار به درآمد</title>
+<style>
+:root{
+--bg:#f7f7f5; --surface:#fff; --surface2:#fbfbfa; --line:#e4e2dd; --line2:#d5d2cb;
+--ink:#1c1b19; --ink2:#4a4741; --ink3:#7d7970;
+--accent:#8a5a2b; --accent-soft:#f3ece3;
+--ok:#2f6b4f; --ok-soft:#e8f1eb;
+--warn:#9a6a10; --warn-soft:#f8f0dc;
+--bad:#9c3b34; --bad-soft:#f8eae8;
+--info:#3a5f86; --info-soft:#e9f0f7;
+--r:14px; --sh:0 1px 2px rgba(28,27,25,.05),0 8px 24px -12px rgba(28,27,25,.12);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+--bg:#141413; --surface:#1d1d1b; --surface2:#232320; --line:#33322e; --line2:#44433d;
+--ink:#f0efe9; --ink2:#c2c0b8; --ink3:#8e8b83;
+--accent:#d4a373; --accent-soft:#2b241c;
+--ok:#7fc0a0; --ok-soft:#1b2a23; --warn:#e0b45c; --warn-soft:#2c2517;
+--bad:#e08b83; --bad-soft:#2e1e1c; --info:#8fb6dd; --info-soft:#1a2331;
+--sh:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+--bg:#141413; --surface:#1d1d1b; --surface2:#232320; --line:#33322e; --line2:#44433d;
+--ink:#f0efe9; --ink2:#c2c0b8; --ink3:#8e8b83;
+--accent:#d4a373; --accent-soft:#2b241c;
+--ok:#7fc0a0; --ok-soft:#1b2a23; --warn:#e0b45c; --warn-soft:#2c2517;
+--bad:#e08b83; --bad-soft:#2e1e1c; --info:#8fb6dd; --info-soft:#1a2331;
+--sh:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+font-family:"Vazirmatn","IRANSans","Segoe UI","Noto Sans Arabic",Tahoma,sans-serif;
+font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+h1,h2,h3,h4{line-height:1.4;margin:0;font-weight:700}
+p{margin:0 0 .9em}
+a{color:var(--accent)}
+.mono{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+
+/* header */
+header{padding:56px 0 40px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:.78rem;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;margin-bottom:14px}
+h1{font-size:clamp(1.7rem,4.2vw,2.5rem);letter-spacing:-.01em}
+.lede{font-size:1.06rem;color:var(--ink2);max-width:62ch;margin-top:16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.chip{font-size:.8rem;padding:6px 13px;border-radius:999px;border:1px solid var(--line2);background:var(--surface);color:var(--ink2);white-space:nowrap}
+.chip.ok{background:var(--ok-soft);border-color:transparent;color:var(--ok)}
+.chip.warn{background:var(--warn-soft);border-color:transparent;color:var(--warn)}
+.chip.bad{background:var(--bad-soft);border-color:transparent;color:var(--bad)}
+.meta{margin-top:24px;font-size:.82rem;color:var(--ink3)}
+
+/* sections */
+section{padding:52px 0;border-bottom:1px solid var(--line)}
+.snum{font-size:.75rem;color:var(--accent);letter-spacing:.12em;margin-bottom:10px;font-weight:600}
+h2{font-size:clamp(1.25rem,2.6vw,1.6rem)}
+.sub{color:var(--ink2);margin-top:10px;max-width:68ch}
+
+/* cards */
+.grid{display:grid;gap:14px;margin-top:26px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh)}
+.card h4{font-size:.98rem;margin-bottom:8px;display:flex;align-items:center;gap:8px;justify-content:space-between}
+.card p{font-size:.9rem;color:var(--ink2);margin:0}
+.tag{font-size:.7rem;padding:3px 9px;border-radius:999px;font-weight:600;white-space:nowrap}
+.t-ok{background:var(--ok-soft);color:var(--ok)}
+.t-warn{background:var(--warn-soft);color:var(--warn)}
+.t-bad{background:var(--bad-soft);color:var(--bad)}
+.t-info{background:var(--info-soft);color:var(--info)}
+.t-mut{background:var(--surface2);color:var(--ink3);border:1px solid var(--line)}
+
+/* stat */
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.stat .v{font-size:1.75rem;font-weight:700;letter-spacing:-.02em;display:block}
+.stat .k{font-size:.82rem;color:var(--ink3);margin-top:4px}
+.stat .n{font-size:.78rem;color:var(--ink2);margin-top:9px;padding-top:9px;border-top:1px dashed var(--line2)}
+.v.ok{color:var(--ok)} .v.bad{color:var(--bad)} .v.warn{color:var(--warn)}
+
+/* pathway */
+.path{margin-top:28px;display:flex;flex-direction:column;gap:0}
+.step{display:flex;align-items:flex-start;gap:14px;padding:11px 0;position:relative}
+.dot{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:.72rem;font-weight:700;
+background:var(--ok-soft);color:var(--ok);border:1px solid transparent;margin-top:2px}
+.step.todo .dot{background:var(--surface2);color:var(--ink3);border-color:var(--line2)}
+.step.now .dot{background:var(--accent);color:#fff}
+.step .lbl{font-size:.95rem;font-weight:600}
+.step.todo .lbl{color:var(--ink3);font-weight:500}
+.step .dsc{font-size:.83rem;color:var(--ink2)}
+.step:not(:last-child)::before{content:"";position:absolute;right:12.5px;top:32px;bottom:-6px;width:1px;background:var(--line2)}
+.youarehere{display:inline-block;font-size:.72rem;background:var(--accent);color:#fff;padding:2px 9px;border-radius:999px;margin-inline-start:8px;vertical-align:middle}
+
+/* table */
+.tblwrap{overflow-x:auto;margin-top:22px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.87rem;min-width:520px}
+th,td{padding:11px 14px;text-align:right;border-bottom:1px solid var(--line)}
+th{background:var(--surface2);font-weight:600;font-size:.8rem;color:var(--ink2);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.hl td{background:var(--accent-soft);font-weight:600}
+
+/* callout */
+.call{margin-top:22px;border-radius:var(--r);padding:16px 18px;border:1px solid var(--line);background:var(--surface2);font-size:.92rem}
+.call strong{display:block;margin-bottom:5px}
+.call.bad{background:var(--bad-soft);border-color:transparent}
+.call.warn{background:var(--warn-soft);border-color:transparent}
+.call.ok{background:var(--ok-soft);border-color:transparent}
+.call.info{background:var(--info-soft);border-color:transparent}
+
+/* evidence drawer */
+details.ev{margin-top:10px;font-size:.82rem}
+details.ev summary{cursor:pointer;color:var(--accent);list-style:none;display:inline-flex;align-items:center;gap:5px;
+padding:3px 10px;border:1px solid var(--line2);border-radius:999px;background:var(--surface);user-select:none}
+details.ev summary::-webkit-details-marker{display:none}
+details.ev summary::before{content:"⌄";font-size:.9em;transition:transform .2s}
+details.ev[open] summary::before{transform:rotate(180deg)}
+details.ev .body{margin-top:9px;padding:11px 14px;background:var(--surface2);border:1px solid var(--line);border-radius:10px;color:var(--ink2)}
+details.ev .body div{margin-bottom:3px}
+
+/* gates accordion */
+.gates{margin-top:26px;display:flex;flex-direction:column;gap:9px}
+details.gate{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+details.gate>summary{cursor:pointer;list-style:none;padding:15px 18px;display:flex;align-items:center;gap:12px;font-weight:600;font-size:.95rem}
+details.gate>summary::-webkit-details-marker{display:none}
+details.gate>summary::after{content:"+";margin-inline-start:auto;color:var(--ink3);font-weight:400;font-size:1.2rem;line-height:1}
+details.gate[open]>summary::after{content:"–"}
+.gid{flex:none;font-size:.72rem;background:var(--surface2);border:1px solid var(--line2);color:var(--ink2);
+padding:3px 9px;border-radius:7px;font-variant-numeric:tabular-nums}
+.gbody{padding:0 18px 18px;font-size:.89rem;color:var(--ink2);border-top:1px solid var(--line);padding-top:15px}
+.gbody dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:7px 14px}
+.gbody dt{color:var(--ink3);font-size:.8rem;white-space:nowrap}
+.gbody dd{margin:0}
+
+/* branch */
+.branch{margin-top:26px;display:flex;flex-direction:column;gap:8px}
+.brow{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:13px 16px}
+.brow .bi{flex:none;width:24px;height:24px;border-radius:6px;display:grid;place-items:center;font-size:.75rem;font-weight:700}
+.bi.pass{background:var(--ok-soft);color:var(--ok)}
+.bi.part{background:var(--warn-soft);color:var(--warn)}
+.bi.fail{background:var(--bad-soft);color:var(--bad)}
+.bi.unk{background:var(--surface2);color:var(--ink3);border:1px solid var(--line2)}
+.brow .bt{font-weight:600;font-size:.92rem}
+.brow .bd{font-size:.83rem;color:var(--ink2)}
+.barrow{text-align:center;color:var(--line2);font-size:1rem;line-height:.6;margin:-2px 0}
+
+/* options */
+.opt{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--sh);display:flex;flex-direction:column}
+.opt.rec{border-color:var(--accent);border-width:2px;position:relative}
+.opt.rec::after{content:"توصیه‌شده";position:absolute;top:-11px;inset-inline-start:18px;background:var(--accent);color:#fff;font-size:.7rem;padding:3px 11px;border-radius:999px}
+.opt h4{font-size:1.05rem;margin-bottom:12px}
+.opt ul{margin:0;padding-inline-start:18px;font-size:.87rem;color:var(--ink2)}
+.opt li{margin-bottom:5px}
+.opt .ftr{margin-top:auto;padding-top:14px;font-size:.83rem;color:var(--ink2);border-top:1px dashed var(--line2)}
+
+/* 90 days */
+ol.plan{margin:26px 0 0;padding:0;list-style:none;counter-reset:p}
+ol.plan li{counter-increment:p;background:var(--surface);border:1px solid var(--line);border-radius:12px;
+padding:14px 16px 14px 16px;margin-bottom:9px;display:flex;gap:14px;align-items:flex-start}
+ol.plan li::before{content:counter(p);flex:none;width:24px;height:24px;border-radius:50%;background:var(--accent-soft);
+color:var(--accent);display:grid;place-items:center;font-size:.78rem;font-weight:700;margin-top:2px}
+ol.plan .pt{font-weight:600;font-size:.93rem}
+ol.plan .pm{font-size:.8rem;color:var(--ink3);margin-top:3px}
+
+.legend{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+footer{padding:36px 0 60px;color:var(--ink3);font-size:.82rem}
+.blank{background:repeating-linear-gradient(45deg,var(--warn-soft),var(--warn-soft) 6px,transparent 6px,transparent 12px);
+border:1px dashed var(--warn);color:var(--warn);padding:1px 8px;border-radius:6px;font-size:.8rem;font-weight:600}
+@media print{details{open:true}section{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap">
+  <div class="eyebrow">سند تصمیم مدیریتی · محرمانه</div>
+  <h1>ماهوت — نقشه راه تبدیل اعتبار ایجادشده به جریان درآمد</h1>
+  <p class="lede">ماهوت از مرحله آزمون بازار عبور کرده و توان فنی‌اش را با گزارش و پیش‌فاکتور رسمی اثبات کرده است. اما تجاری‌سازی هنوز پشت چند قفل حقوقی متوقف است. این سند نشان می‌دهد پول خرج‌شده کجا رفت، چرا درآمد نیامد، و پرسش واقعی سرمایه‌گذاری چیست: نه «چقدر خرج کرده‌ایم»، بلکه <strong>«آیا سرمایهٔ باقی‌مانده ارزش باز کردن این قفل‌ها را دارد؟»</strong></p>
+  <div class="chips">
+    <span class="chip ok">شرکت ثبت‌شده و فعال</span>
+    <span class="chip ok">توان فنی اثبات‌شده</span>
+    <span class="chip warn">حساب بانکی غیرفعال</span>
+    <span class="chip warn">کد فعالیت ناکافی</span>
+    <span class="chip warn">صفر کارمند عمانی</span>
+    <span class="chip bad">صفر درآمد وصول‌شده</span>
+    <span class="chip">کالیبراسیون: HOLD</span>
+  </div>
+  <div class="meta">نسخه ۱٫۰ · ۲۷ آگوست ۲۰۲۶ · مخاطب: هیئت‌مدیره و سهامداران · تهیه بر پایه اسناد داخلی، دو گزارش تحقیقاتی و منابع رسمی عمان</div>
+</div>
+</header>
+
+<section>
+<div class="wrap">
+  <div class="snum">۰۱</div>
+  <h2>در ۶۰ ثانیه</h2>
+  <div class="grid g3" style="margin-top:22px">
+    <div class="stat"><span class="v mono">۹٬۳۶۶</span><span class="k">ریال تنخواه ثبت‌شده در ۹ ماه</span><div class="n">فقط ۴۴٪ آن هزینه مستقیم ماهوت است</div></div>
+    <div class="stat"><span class="v bad mono">۰</span><span class="k">ریال درآمد وصول‌شده</span><div class="n">هیچ سند وصولی در پرونده نیست</div></div>
+    <div class="stat"><span class="v warn mono">۳</span><span class="k">قفل حقوقی باز نشده</span><div class="n">بانک · کد فعالیت · کارمند عمانی</div></div>
+    <div class="stat"><span class="v ok mono">۶ تا ۱۴</span><span class="k">کار در ماه تا سربه‌سر</span><div class="n">دو مدل مستقل به یک بازه رسیدند</div></div>
+    <div class="stat"><span class="v mono">≈ ۱۰٬۰۰۰</span><span class="k">ریال نقدینگی ۶ ماهه لازم</span><div class="n">سناریو کم‌هزینه، شامل کارمند عمانی</div></div>
+    <div class="stat"><span class="v mono">۲۰۲۸</span><span class="k">اعتبار مجوز شرکت</span><div class="n">۱۰۰٪ مالکیت خارجی — دارایی گران</div></div>
+  </div>
+  <div class="call info"><strong>خط اصلی داستان</strong>
+  مشکل ماهوت، نبودِ تقاضا نیست. مشکل، <strong>زیرساخت تجاری ناتمام</strong> است. شرکت ثبت شده اما نمی‌تواند پول بگیرد؛ کار فنی کرده اما نمی‌تواند فاکتور قانونی صادر کند؛ به وزارتخانه‌ها راه پیدا کرده اما بدون کارمند عمانی نمی‌تواند تأمین‌کننده ثبت‌شده شود. هر سه، مسئله‌ای اجرایی‌اند نه بازاری — و هر سه با پول و زمان مشخص قابل حل‌اند.</div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+  <div class="snum">۰۲</div>
+  <h2>امروز کجا ایستاده‌ایم</h2>
+  <p class="sub">مسیر بلوغ یک شرکت خدمات فنی، هشت پله دارد. ماهوت پنج پله را رد کرده و دقیقاً روی پله ششم متوقف است — همان پله‌ای که بدون آن، پنج پله قبلی درآمد تولید نمی‌کنند.</p>
+  <div class="path">
+    <div class="step"><div class="dot">✓</div><div><div class="lbl">شناسایی درد بازار</div><div class="dsc">وابستگی برون‌مرزی به کانال دبی برای سرویس کروماتوگرافی — تأییدشده از صفحه رسمی Agilent</div></div></div>
+    <div class="step"><div class="dot">✓</div><div><div class="lbl">توان فنی</div><div class="dsc">تیم فنی، دامنه GC/HPLC/ICP، گزارش‌های فنی حرفه‌ای با تشخیص علت و ارزیابی اقتصادی</div></div></div>
+    <div class="step"><div class="dot">✓</div><div><div class="lbl">دسترسی اولیه به بازار</div><div class="dsc">GTS، RACS، معرفی به وزارت بهداشت، دانشگاه سلطان قابوس، وزارت کشاورزی</div></div></div>
+    <div class="step"><div class="dot">✓</div><div><div class="lbl">تجربه موفق سرویس</div><div class="dsc">بازدید فنی، گزارش مکتوب، پیش‌فاکتور رسمی ۴۰۲٫۵۵ ریالی به GTS</div></div></div>
+    <div class="step"><div class="dot">✓</div><div><div class="lbl">شخصیت حقوقی</div><div class="dsc">CR ۱۶۳۷۲۷۱ — فعال، ۱۰۰٪ مالکیت خارجی، معتبر تا دسامبر ۲۰۲۸</div></div></div>
+    <div class="step now"><div class="dot">۶</div><div><div class="lbl">زیرساخت تجاری <span class="youarehere">اینجا متوقفیم</span></div><div class="dsc">حساب بانکی، کد فعالیت منطبق، کارمند عمانی، اجاره‌نامه رسمی، ثبت تأمین‌کننده</div></div></div>
+    <div class="step todo"><div class="dot">۷</div><div><div class="lbl">درآمد تکرارشونده</div><div class="dsc">قرارداد نگهداری سالانه، وصول زیر ۶۰ روز، حاشیه اثبات‌شده</div></div></div>
+    <div class="step todo"><div class="dot">۸</div><div><div class="lbl">مقیاس</div><div class="dsc">قطعات، تجهیزات، پروژه‌های بزرگ، و — فقط در صورت عبور از گیت‌ها — کالیبراسیون</div></div></div>
+  </div>
+  <div class="call warn"><strong>نکته‌ای که در ارزیابی مدت زمان باید دیده شود</strong>
+  زمان تقویمی از تأسیس (دسامبر ۲۰۲۵) حدود ۸ ماه است، اما <strong>زمان عملیاتی مفید بسیار کمتر است</strong>: دو ماه و ده روز جنگ با قطع کامل ارتباط با نفر فنی، به‌علاوه دوره‌ای که فعالیت تعمیراتی در مسقط اصلاً پروانه نداشت (تا ۲۳ جولای ۲۰۲۶). ارزیابی عملکرد بر مبنای ۸ ماه کامل، ارزیابی نادرستی است.</div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+  <div class="snum">۰۳</div>
+  <h2>چه چیزی واقعاً ساخته شده</h2>
+  <p class="sub">هر کارت با وضعیت اثبات و درجه اطمینان. آنچه فقط ادعا است، به‌عنوان فکت نمایش داده نشده.</p>
+  <div class="grid g2">
+    <div class="card"><h4>شرکت ثبت‌شده <span class="tag t-ok">اثبات‌شده</span></h4>
+      <p>CR ۱۶۳۷۲۷۱ · تأسیس ۲۴/۱۲/۲۰۲۵ · اعتبار تا ۲۴/۱۲/۲۰۲۸ · سرمایه ۱۰۰٬۰۰۰ ریال · ۱۰۰٪ مالکیت خارجی · شماره مالیاتی ۲۲۵۵۱۹۳</p>
+      <details class="ev"><summary>مشاهده منبع</summary><div class="body">
+        <div><b>منبع:</b> cr_certificate(1637271).pdf صفحات ۱ تا ۴</div>
+        <div><b>نوع شواهد:</b> شواهد داخلی — سند رسمی دولتی</div>
+        <div><b>اطمینان:</b> بالا</div>
+        <div><b>نکته:</b> سهام — رضاییان ۶۶٪ · صادقی ۳۰٪ · داتام ۴٪. تنها امضادار مجاز: رضاییان، منفرد و مطلق.</div>
+      </div></details></div>
+
+    <div class="card"><h4>توان فنی و گزارش‌دهی <span class="tag t-ok">اثبات‌شده</span></h4>
+      <p>گزارش فنی GTS با تشخیص علت سه دستگاه، ارزیابی امکان‌سنجی فنی <em>و اقتصادی</em>، و توصیه صریح به تعمیر نکردن در موارد غیراقتصادی. پروپوزال RACS بر پایه TPM و FMEA.</p>
+      <details class="ev"><summary>مشاهده منبع</summary><div class="body">
+        <div><b>منبع:</b> GTS Visit Report-Mahut-01.pdf · Racs Labs Proposal-Mahut-00.pdf</div>
+        <div><b>نوع شواهد:</b> شواهد داخلی · اطمینان بالا</div>
+        <div><b>چرا مهم است:</b> توصیه به «تعمیر نکن» نشانه بلوغ حرفه‌ای است و همان چیزی است که رقبای تعویض‌محور ارائه نمی‌دهند.</div>
+      </div></details></div>
+
+    <div class="card"><h4>قیمت‌گذاری واقعی <span class="tag t-ok">اثبات‌شده</span></h4>
+      <p>پیش‌فاکتور رسمی شماره ۰۰۱ به GTS: ۴۸۵ ریال، پس از ۱۷٪ تخفیف <span class="mono">۴۰۲٫۵۵</span> ریال برای سه دستگاه در یک بازدید. تنها نقطه اتکای واقعی قیمت در کل پرونده.</p>
+      <details class="ev"><summary>مشاهده منبع</summary><div class="body">
+        <div><b>منبع:</b> Quotation_GTS_23-02-2026-001.pdf</div>
+        <div><b>نوع شواهد:</b> شواهد داخلی · اطمینان بالا</div>
+        <div><b>پیامد:</b> بیزینس‌پلن هر اینویس را ۱۰۰ ریال ناخالص فرض کرده بود. عدد واقعی حدود چهار برابر آن است — یعنی بیزینس‌پلن در قیمت‌گذاری بدبین بوده، نه در حجم خوش‌بین.</div>
+      </div></details></div>
+
+    <div class="card"><h4>شکاف بازار سرویس <span class="tag t-warn">جزئاً اثبات‌شده</span></h4>
+      <p>نماینده رسمی Agilent در عمان (Al Zahrawi) دامنه اعلامی‌اش Dissolution و Genomics و Pathology است — نه سرویس کروماتوگرافی. کانال رسمی Chromatography و MS از دبی معرفی می‌شود.</p>
+      <details class="ev"><summary>مشاهده منبع</summary><div class="body">
+        <div><b>منبع:</b> agilent.com/en/contact-us/oman · گزارش امکان‌سنجی ۲۰۲۶</div>
+        <div><b>نوع شواهد:</b> فکت بیرونی · اطمینان بالا</div>
+        <div><b>محدودیت مهم:</b> این <em>وابستگی برون‌مرزی</em> را ثابت می‌کند، نه خالی بودن بازار را.</div>
+      </div></details></div>
+
+    <div class="card"><h4>وب‌سایت و هویت بیرونی <span class="tag t-ok">اثبات‌شده</span></h4>
+      <p>mahutqc.com و صفحه شرکتی لینکدین فعال‌اند؛ اعلام آغاز فعالیت ۲۸ مارس ۲۰۲۶ منتشر شده. زیرساخت حسابداری نیز طبق اعلام مدیریت تکمیل است.</p>
+      <details class="ev"><summary>مشاهده منبع</summary><div class="body">
+        <div><b>منبع:</b> گزارش امکان‌سنجی ۲۷ آگوست ۲۰۲۶ (فکت بیرونی) + اعلام مدیریت برای حسابداری (ادعای مدیریت)</div>
+        <div><b>هشدار:</b> «Founded 2026» و تیم فهرست‌شده بسیار کوچک، ریسک <em>کلیدشخص</em> ایجاد می‌کند.</div>
+      </div></details></div>
+
+    <div class="card"><h4>دسترسی به وزارتخانه‌ها <span class="tag t-warn">ادعای مدیریت</span></h4>
+      <p>تعمیرات برای وزارت بهداشت، دانشگاه سلطان قابوس، وزارت کشاورزی و ALS. رضایت مشتری اعلام شده.</p>
+      <details class="ev"><summary>مشاهده منبع</summary><div class="body">
+        <div><b>منبع:</b> اظهارات مدیریت (وویس دکتر صادقی)</div>
+        <div><b>نوع شواهد:</b> ادعای مدیریت — <b>هیچ سفارش خرید، فاکتور یا نامه مرجعی در پرونده نیست</b></div>
+        <div><b>برای ارتقا به «اثبات‌شده» لازم است:</b> یک PO، یک فاکتور وصول‌شده، یا یک نامه رضایت کتبی</div>
+      </div></details></div>
+
+    <div class="card"><h4>پروژه ۳۵٬۰۰۰ ریالی وزارت بهداشت <span class="tag t-warn">پایپ‌لاین</span></h4>
+      <p>جابه‌جایی پنج آزمایشگاه تخصصی. پروپوزال فنی ارائه شده است. <strong>این درآمد نیست</strong> و نباید با درآمد جمع شود.</p>
+      <details class="ev"><summary>مشاهده منبع</summary><div class="body">
+        <div><b>منبع:</b> اظهارات مدیریت · پروپوزال در پرونده موجود نیست</div>
+        <div><b>یافته جدید:</b> پروژه‌های زیر ۲۵۰٬۰۰۰ ریال از مسیر کمیته تدارکات داخلی وزارتخانه می‌روند، نه هیئت مناقصات. اگر تأیید شود، <b>مسیر این پروژه کوتاه‌تر از تصور است.</b></div>
+        <div><b>مانع باقی‌مانده:</b> کد فعالیت پیمانکاری در CR وجود ندارد.</div>
+      </div></details></div>
+
+    <div class="card"><h4>درآمد و مطالبات <span class="tag t-bad">اثبات نشده</span></h4>
+      <p>صفر سند وصولی در پرونده. عدد مطالبات ALS و Food Safety &amp; Quality هنوز در دست نیست.</p>
+      <details class="ev"><summary>مشاهده منبع</summary><div class="body">
+        <div><b>وضعیت:</b> <span class="blank">جای خالی — منتظر جلسه مالی</span></div>
+        <div><b>لازم است:</b> مبلغ مطالبات · تاریخ فاکتورها · مجموع حقوق پرداختی خارج از تنخواه</div>
+      </div></details></div>
+  </div>
+</div>
+</section>
+<section>
+<div class="wrap">
+  <div class="snum">۰۴</div>
+  <h2>گلوگاه واقعی کجاست</h2>
+  <p class="sub">ورودی‌های بازار سبزند. خروجی صفر است. آنچه بین این دو ایستاده، پنج قفل اداری است — نه ضعف تقاضا.</p>
+  <div class="branch" style="margin-top:24px">
+    <div class="brow"><div class="bi pass">✓</div><div><div class="bt">دسترسی به بازار</div><div class="bd">راه به وزارتخانه‌ها و آزمایشگاه‌های خصوصی باز شده</div></div></div>
+    <div class="brow"><div class="bi pass">✓</div><div><div class="bt">توان فنی</div><div class="bd">گزارش، تشخیص، پیش‌فاکتور — همه اثبات‌شده</div></div></div>
+    <div class="brow"><div class="bi pass">✓</div><div><div class="bt">علاقه مشتری</div><div class="bd">درخواست تعمیر و پیشنهاد پروژه از سمت مشتری آمده</div></div></div>
+    <div class="barrow">▼</div>
+    <div class="brow"><div class="bi fail">✕</div><div><div class="bt">حساب بانکی شرکت</div><div class="bd">غیرفعال — فعال‌سازی نیازمند حضور فیزیکی امضادار منفرد در عمان</div></div></div>
+    <div class="brow"><div class="bi fail">✕</div><div><div class="bt">تطابق کد فعالیت</div><div class="bd">فقط ۳۳۱۹۱۰ (تعقیم و تقطیر) و ۴۶۱۰۰۳ (واردات/صادرات) ثبت است — تعمیر تجهیزات آنالیتیکال پوشش ندارد</div></div></div>
+    <div class="brow"><div class="bi fail">✕</div><div><div class="bt">کارمند عمانی</div><div class="bd">صفر — پیش‌شرط ثبت تأمین‌کننده، امتیاز ICV و تمدید ویزای نفر فنی</div></div></div>
+    <div class="brow"><div class="bi part">!</div><div><div class="bt">اجاره‌نامه رسمی دفتر</div><div class="bd">فقط پیش‌پرداخت اجاره‌نامه موقت (۱۲۰ ریال، جولای) پرداخت شده</div></div></div>
+    <div class="brow"><div class="bi part">!</div><div><div class="bt">ثبت تأمین‌کننده و PTLC</div><div class="bd">ناتمام — و خودش وابسته به سه قفل بالاست</div></div></div>
+    <div class="barrow">▼</div>
+    <div class="brow"><div class="bi unk">۰</div><div><div class="bt">درآمد</div><div class="bd">هیچ ریالی وصول نشده — نتیجه منطقی زنجیره بالا، نه نتیجه ضعف بازار</div></div></div>
+  </div>
+  <div class="call bad"><strong>یک فرضیه که باید همین هفته آزمون شود</strong>
+  همه فرض کرده‌اند مطالبات فقط به‌دلیل حساب بانکی گیر کرده‌اند. اما اگر خدمتی که فاکتور شده بیرون از فعالیت مجاز CR باشد، ممکن است دفتر مالی وزارتخانه اصلاً فاکتور را پردازش نکند — مستقل از حساب بانکی. یعنی <strong>ممکن است حساب باز شود و پول باز هم نیاید.</strong> اگر این درست باشد، اصلاح کد فعالیت جلوتر از حساب بانکی در صف قرار می‌گیرد.
+  <details class="ev" style="margin-top:12px"><summary>مشاهده منبع</summary><div class="body">
+    <div><b>نوع:</b> فرض — نیازمند آزمون فوری</div>
+    <div><b>مبنا:</b> CR ص۲–۳ (فعالیت‌های مجاز) در برابر گزارش‌های فنی GTS/RACS (تجهیزات واقعی) · آیین‌نامه ۱۰۴/۲۰۲۲ که «مجوزهای بخشی» را از تأمین‌کننده دولت مطالبه می‌کند</div>
+    <div><b>راه آزمون:</b> یک پرسش از دفتر Sanad یا واحد مالی وزارتخانه</div>
+  </div></details></div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+  <div class="snum">۰۵</div>
+  <h2>نمای پول — بدون قاطی کردن</h2>
+  <p class="sub">پنج عدد که هرگز نباید با هم جمع شوند: پول خرج‌شده · پول لازم · درآمد محقق‌شده · مطالبات · پایپ‌لاین.</p>
+
+  <h3 style="margin-top:30px;font-size:1.02rem">الف — پول خرج‌شده واقعاً کجا رفت</h3>
+  <div class="tblwrap">
+  <table>
+    <thead><tr><th>دسته</th><th>مبلغ (ریال)</th><th>سهم</th><th>ماهیت</th></tr></thead>
+    <tbody>
+      <tr><td>ثبت و امور قانونی شرکت</td><td class="num">۳٬۱۱۹</td><td class="num">۳۳٪</td><td>یک‌بارمصرف — دارایی دائمی ساخت</td></tr>
+      <tr><td>زیرساخت دیجیتال</td><td class="num">۶۱۱</td><td class="num">۷٪</td><td>تکرارشونده</td></tr>
+      <tr><td>سفر کاری و ابزار</td><td class="num">۴۴۲</td><td class="num">۵٪</td><td>متغیر</td></tr>
+      <tr><td>مشترک — تردد، خوراک، قبوض تیم مستقر</td><td class="num">۱٬۸۲۶</td><td class="num">۱۹٪</td><td>تکرارشونده</td></tr>
+      <tr><td><strong>غیرماهوت</strong> — نوامبر + اقلام شخصی و خانوادگی</td><td class="num">۲٬۶۷۸</td><td class="num">۲۹٪</td><td><strong>از بحث ماهوت خارج شود</strong></td></tr>
+      <tr><td>نامشخص</td><td class="num">۶۹۱</td><td class="num">۷٪</td><td>نیاز به تفکیک</td></tr>
+      <tr class="hl"><td>جمع تنخواه ثبت‌شده</td><td class="num">۹٬۳۶۶</td><td class="num">۱۰۰٪</td><td>نوامبر ۲۰۲۵ تا جولای ۲۰۲۶</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="call ok"><strong>سه جمله‌ای که به آقای رضاییان باید گفته شود</strong>
+  یک: <strong>۲۹٪ از آنچه در ذهن به‌عنوان «هزینه ماهوت» جمع شده، هزینه ماهوت نیست.</strong> دو: از باقی‌مانده، بزرگ‌ترین قلم (۳٬۱۱۹ ریال) خرج جاری نبوده — پول ساختن یک شرکت ثبت‌شده با ۱۰۰٪ مالکیت خارجی و اعتبار تا ۲۰۲۸ بوده، که دوباره ساختنش سال‌ها طول می‌کشد. سه: نرخ سوخت تکرارشونده تنخواه ماهوت <strong>حدود ۳۶۰ ریال در ماه</strong> است.
+  <details class="ev" style="margin-top:12px"><summary>مشاهده منبع</summary><div class="body">
+    <div><b>منبع:</b> فایل PettyCash، ۹ شیت ماهانه، ۴۳۶ ردیف · طبقه‌بندی بر پایه علامت‌گذاری قرمز دکتر صادقی به‌علاوه شرح هر قلم</div>
+    <div><b>نوع شواهد:</b> شواهد داخلی · اطمینان بالا</div>
+    <div><b>هشدار دامنه:</b> این فایل فقط تنخواه است. حقوق‌ها و تزریق‌های سرمایه خارج از آن، در این جدول نیستند.</div>
+  </div></details></div>
+
+  <h3 style="margin-top:34px;font-size:1.02rem">ب — پول لازم از این لحظه به بعد</h3>
+  <p class="sub" style="margin-top:8px">این تنها عددی است که در تصمیم وزن دارد. پول خرج‌شده sunk است.</p>
+  <div class="tblwrap">
+  <table>
+    <thead><tr><th>سناریو</th><th>هزینه ثابت ماهانه</th><th>نقدینگی ۶ ماه</th><th>توضیح</th></tr></thead>
+    <tbody>
+      <tr><td>کم‌هزینه</td><td class="num">≈ ۱٬۶۷۰</td><td class="num">≈ ۱۰٬۰۰۰</td><td>بدون بودجه مارکتینگ — حداقل قانونی</td></tr>
+      <tr class="hl"><td>پایه</td><td class="num">≈ ۲٬۰۲۰</td><td class="num">≈ ۱۲٬۱۰۰</td><td>با ۳۵۰ ریال مارکتینگ ماهانه</td></tr>
+      <tr><td>واقع‌گرایانه</td><td class="num">≈ ۲٬۵۷۰</td><td class="num">≈ ۱۵٬۴۰۰</td><td>با دفتر و مارکتینگ کامل</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <details class="ev"><summary>مشاهده منبع و مفروضات</summary><div class="body">
+    <div><b>کارمند عمانی:</b> ۳۴۱ ریال در ماه — حداقل دستمزد قانونی ۳۲۵ (۲۲۵ پایه + ۱۰۰ مزایا) به‌علاوه ۷٪ سهم کارفرما از پایه. <b>فکت بیرونی، اطمینان بالا.</b></div>
+    <div><b>نفر فنی ۴۰۰ · نفر اجرایی ۳۰۰:</b> از سند بودجه ژوئن ۲۰۲۶ و اسلاید ۱۱ بیزینس‌پلن — ادعای مدیریت.</div>
+    <div><b>تنخواه ۳۶۰:</b> محاسبه‌شده از داده واقعی ۸ ماه.</div>
+    <div><b>اسکان/دفتر ۲۷۰ تا ۴۷۰:</b> سند بودجه ژوئن ۲۰۲۶ — ادعای مدیریت.</div>
+    <div><b>هزینه‌های یک‌بارمصرف اصلاح CR، ثبت PTLC و ویزای کاری:</b> <span class="blank">جای خالی — منتظر استعلام</span></div>
+  </div></details>
+
+  <h3 style="margin-top:34px;font-size:1.02rem">ج — درآمد، مطالبات، پایپ‌لاین</h3>
+  <div class="grid g3" style="margin-top:16px">
+    <div class="stat"><span class="v bad mono">۰</span><span class="k">درآمد وصول‌شده</span><div class="n">هیچ سند وصولی در پرونده نیست</div></div>
+    <div class="stat"><span class="v warn">در انتظار</span><span class="k">مطالبات ALS و FS&amp;Q</span><div class="n"><span class="blank">جای خالی — جلسه مالی</span></div></div>
+    <div class="stat"><span class="v mono">۳۵٬۰۰۰</span><span class="k">پایپ‌لاین اعلام‌شده</span><div class="n">پروژه وزارت بهداشت — <strong>درآمد نیست</strong></div></div>
+  </div>
+  <div class="call warn"><strong>قاعده‌ای که در این سند شکسته نمی‌شود</strong>
+  پایپ‌لاین هرگز با درآمد جمع نمی‌شود. عدد ۳۵٬۰۰۰ ریالی وزارت بهداشت یک فرصت است، نه یک دارایی. تا وقتی قرارداد امضا نشده، وزن آن در محاسبه ROI صفر است.</div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+  <div class="snum">۰۶</div>
+  <h2>پاسخ به پرسش اصلی: آیا اقتصادی است؟</h2>
+  <p class="sub">پرسش درست این نیست که «آیا سودآور خواهد بود». پرسش درست این است: <strong>چند کار در ماه لازم است تا هزینه‌ها پوشش داده شود، و آیا آن عدد در دسترس است؟</strong></p>
+
+  <div class="tblwrap">
+  <table>
+    <thead><tr><th>فرض سود خالص هر کار</th><th>کار در ماه تا سربه‌سر</th><th>با ۳ قرارداد نگهداری ۱۵۰ ریالی</th><th>ارزیابی</th></tr></thead>
+    <tbody>
+      <tr><td>۴۰ ریال — فرض بیزینس‌پلن</td><td class="num">۴۲</td><td class="num">۳۱</td><td>عملاً غیرممکن با یک نفر فنی</td></tr>
+      <tr class="hl"><td>۱۲۰ تا ۲۰۰ ریال — اقتصاد پیش‌فاکتور واقعی GTS</td><td class="num">۸ تا ۱۴</td><td class="num">۶ تا ۱۰</td><td>قابل دستیابی</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="call ok"><strong>مهم‌ترین یافته این سند</strong>
+  دو مدل مالی <em>کاملاً مستقل</em> به یک بازه رسیده‌اند. محاسبه ما از روی تنخواه و حقوق واقعی: <strong>۶ تا ۱۴ کار در ماه</strong>. گزارش امکان‌سنجی مستقل با روش دیگر (فاکتور متوسط ۴۵۰ ریال، حاشیه ۵۵٪، هزینه ثابت ۲٬۵۰۰): <strong>۱۰٫۱ کار در ماه</strong>. وقتی دو روش مستقل به یک عدد می‌رسند، آن عدد قابل اتکاست.
+  <br><br>یعنی ماهوت برای سربه‌سر شدن به <strong>حدود ده کار در ماه</strong> نیاز دارد — نه چهل‌و‌دو کار. تفاوت این دو عدد، تفاوت بین «غیرممکن» و «قابل برنامه‌ریزی» است.</div>
+
+  <div class="call bad"><strong>و مهم‌ترین اصلاحی که باید انجام شود</strong>
+  ادعای «سربه‌سر از ماه هفتم» در بیزینس‌پلن، بر پایه هزینه ثابت ماهانه ۱٬۳۸۰ ریال بسته شده است. اما اسلاید ۱۱ همان فایل عدد ۱٬۸۸۰ می‌دهد و سند بودجه ژوئن ۲۰۲۶ عدد ۲٬۸۰۰. با ۱٬۸۸۰، درآمد ماه هفتم به‌جای ‎+۱۰۰ می‌شود <strong>−۴۰۰</strong>. با ۲٬۸۰۰ می‌شود <strong>−۱٬۳۲۰</strong>.
+  <br><br><strong>این عدد باید پیش از ارائه اصلاح شود.</strong> اگر اصلاح‌نشده ارائه شود، اولین کسی که آن را چک کند کل سند را بی‌اعتبار می‌کند.
+  <details class="ev" style="margin-top:12px"><summary>مشاهده منبع</summary><div class="body">
+    <div><b>منبع:</b> BP of Mahut-01.pptx اسلایدهای ۶، ۹ و ۱۱ · سند بودجه ژوئن ۲۰۲۶ · وویس آقای داتام (۴٬۰۰۰ تا ۶٬۰۰۰)</div>
+    <div><b>نوع شواهد:</b> متناقض — چهار عدد متفاوت در چهار سند</div>
+    <div><b>بازمحاسبه:</b> درآمد Q3 = ۱٬۴۸۰ (قرارداد ۱٬۰۰۰ + تعمیرات ۴۸۰). سود = درآمد − FC.</div>
+  </div></details></div>
+
+  <div class="call info"><strong>و یک اصلاح بزرگ‌تر در روایت بازار</strong>
+  فرض اولیه ماهوت این بود که بازار عمان از خدمات تعمیر خالی است. <strong>این درست نیست.</strong> GST Oman، MODAL، Muscat Pharmacy، Allied و Global Calibration Services همگی در عمان فعال‌اند. ماهوت نباید خودش را «اولین یا تنها» معرفی کند — این ادعا در اولین جلسه فنی رد می‌شود.
+  <br><br>مزیت قابل دفاع ماهوت چیز دیگری است و اتفاقاً قوی‌تر: <strong>سرعت پاسخ محلی، تشخیص چندبرندی، تعمیر به‌جای تعویض، و گزارش فنی صادقانه</strong> — دقیقاً همان چیزی که گزارش GTS نشان می‌دهد و کانال دبی نمی‌تواند بدهد.
+  <details class="ev" style="margin-top:12px"><summary>مشاهده منبع</summary><div class="body">
+    <div><b>منبع:</b> گزارش امکان‌سنجی ۲۷ آگوست ۲۰۲۶، نقشه رقابت — وب‌سایت شرکت‌ها و دامنه رسمی اعتباربخشی</div>
+    <div><b>نوع شواهد:</b> فکت بیرونی · اطمینان متوسط تا بالا</div>
+    <div><b>اثر:</b> ادعای داخلی «سرویس‌لول ضعیف و خلأ بازار» را از فکت به فرضیه تنزل می‌دهد و جایگاه‌یابی را عوض می‌کند.</div>
+  </div></details></div>
+</div>
+</section>
+<section>
+<div class="wrap">
+  <div class="snum">۰۷</div>
+  <h2>موتور کسب‌وکار — ترتیب اهمیت دارد</h2>
+  <p class="sub">ماهوت یک محصول نیست، پنج لایه است. هر لایه ورودیِ لایه بعد را می‌سازد. جهش از لایه یک به لایه چهار، شکست است.</p>
+  <div class="branch">
+    <div class="brow"><div class="bi pass">۱</div><div><div class="bt">تعمیر و نگهداری — موتور ورود و اعتماد</div><div class="bd">سریع‌ترین مسیر به نقدینگی · سرمایه کم · ریسک مقرراتی کم · <strong>مدل اصلی ۰ تا ۱۲ ماه</strong></div></div></div>
+    <div class="barrow">▼</div>
+    <div class="brow"><div class="bi part">۲</div><div><div class="bt">قطعات یدکی — موتور حاشیه سود</div><div class="bd">حاشیه بهتر از تعمیر · نیازمند فعالیت واردات فعال و سرمایه در گردش · معیار: حاشیه قطعه ≥۲۰٪</div></div></div>
+    <div class="barrow">▼</div>
+    <div class="brow"><div class="bi part">۳</div><div><div class="bt">فروش تجهیزات — موتور مقیاس</div><div class="bd">پس از authorization سازنده و کنترل سرمایه در گردش · دستگاه ریفرب از چین با حاشیه ۲۰ تا ۲۵٪</div></div></div>
+    <div class="barrow">▼</div>
+    <div class="brow"><div class="bi unk">۴</div><div><div class="bt">کالیبراسیون — گسترش راهبردی</div><div class="bd">فقط از مسیر شراکت · <strong>وضعیت: HOLD</strong> · هیچ CAPEX تا پاسخ کتبی DGSM</div></div></div>
+    <div class="barrow">▼</div>
+    <div class="brow"><div class="bi unk">۵</div><div><div class="bt">پروژه‌های بزرگ فنی — فرصت‌های سنگین</div><div class="bd">جابه‌جایی آزمایشگاه، انتقال مینی‌پلانت اسمز معکوس · نیازمند کد فعالیت پیمانکاری</div></div></div>
+  </div>
+  <details class="ev"><summary>مشاهده منبع — چرا این ترتیب</summary><div class="body">
+    <div><b>منبع:</b> گزارش امکان‌سنجی ۲۷ آگوست ۲۰۲۶، رتبه‌بندی هشت مدل کسب‌وکار</div>
+    <div><b>امتیازها:</b> نگهداری+قطعات ۴٫۷ · فقط نگهداری ۴٫۴ · شراکت با آزمایشگاه معتبر ۴٫۲ · فروش تجهیزات ۳٫۶ · کالیبراسیون عمومی ۳٫۳ · قرارداد مستقیم utility ۳٫۰ · واحد سیار آب ۲٫۸ · <b>آزمایشگاه مستقل کنتور آب ۲٫۵ — آخرین رتبه</b></div>
+    <div><b>نوع شواهد:</b> فرض — قضاوت مدیریتی بر پایه سرعت درآمد، CAPEX، ریسک مقررات، تکرارپذیری و تمرکز مشتری</div>
+  </div></details>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+  <div class="snum">۰۸</div>
+  <h2>دروازه‌های تصمیم</h2>
+  <p class="sub">هیچ ریالی برای مرحله بعد آزاد نمی‌شود تا مدرک مرحله قبل کامل باشد. روی هر دروازه بزنید تا باز شود.</p>
+  <div class="gates">
+
+  <details class="gate" open><summary><span class="gid">GATE 0</span> آیا ماهوت باید ادامه دهد؟ <span class="tag t-warn" style="margin-inline-start:auto;margin-inline-end:8px">عبور مشروط</span></summary>
+    <div class="gbody"><dl>
+      <dt>پرسش</dt><dd>آیا فرصتِ ساخته‌شده بیشتر از سرمایه <em>باقی‌مانده</em> می‌ارزد؟ پول خرج‌شده sunk است و در این تصمیم وزن ندارد.</dd>
+      <dt>در یک کفه</dt><dd>شرکت فعال با ۱۰۰٪ مالکیت خارجی تا ۲۰۲۸ · توان فنی اثبات‌شده · دسترسی به وزارتخانه‌ها · قیمت‌گذاری واقعی اثبات‌شده · سربه‌سر در حدود ده کار در ماه</dd>
+      <dt>در کفه دیگر</dt><dd>حدود ۱۰٬۰۰۰ تا ۱۵٬۴۰۰ ریال نقدینگی برای شش ماه · صفر درآمد اثبات‌شده تا امروز · بازار پررقیب‌تر از تصور اولیه</dd>
+      <dt>معیار PASS</dt><dd>تعهد سهامداران به شش ماه نقدینگی سناریوی انتخابی <strong>و</strong> باز شدن سه قفل GATE 1 ظرف ۹۰ روز</dd>
+      <dt>معیار FAIL</dt><dd>اگر تعهد نقدینگی کمتر از شش ماه باشد، گزینه HOLD معنا ندارد و باید مستقیم به STOP رفت</dd>
+    </dl></div></details>
+
+  <details class="gate"><summary><span class="gid">GATE 1</span> آمادگی حقوقی <span class="tag t-bad" style="margin-inline-start:auto;margin-inline-end:8px">قفل اصلی</span></summary>
+    <div class="gbody"><dl>
+      <dt>حساب بانکی</dt><dd>بسته · مالک: رضاییان · PASS = دسته‌چک صادر شده</dd>
+      <dt>کد فعالیت CR</dt><dd>ناکافی · مالک: داتام / دفتر Sanad · PASS = کد تعمیر تجهیزات اندازه‌گیری افزوده شده</dd>
+      <dt>کارمند عمانی</dt><dd>صفر · مالک: داتام · PASS = قرارداد در وزارت کار ثبت شده · هزینه ۳۴۱ ریال ماهانه</dd>
+      <dt>اجاره‌نامه دفتر</dt><dd>موقت · PASS = اجاره‌نامه رسمی به نام شرکت</dd>
+      <dt>ثبت تأمین‌کننده</dt><dd>ناتمام · نما: ۱۰۰ ریال + ۵٪ مالیات، اعتبار دو سال، بررسی تا ۱۰ روز کاری · <strong>پیش‌شرطش حساب بانکی و Omanisation است</strong></dd>
+      <dt>پروانه برکاء</dt><dd>انقضا ۲۸/۱۲/۲۰۲۶ — چهار ماه دیگر · باید تمدید یا به مسقط منتقل شود</dd>
+      <dt>ترتیب</dt><dd>تا زمانی که مشخص نشود فاکتورها به‌دلیل بانک گیر کرده‌اند یا به‌دلیل کد فعالیت، اولویت قطعی نیست. این را همین هفته بپرسید.</dd>
+    </dl></div></details>
+
+  <details class="gate"><summary><span class="gid">GATE 2</span> فعال‌سازی درآمد <span class="tag t-mut" style="margin-inline-start:auto;margin-inline-end:8px">اثبات نشده</span></summary>
+    <div class="gbody"><dl>
+      <dt>معیار PASS</dt><dd>سه تا پنج کار پرداخت‌شده · وصول زیر ۶۰ روز · حداقل یک قرارداد نگهداری امضاشده · توان صدور فاکتور قانونی</dd>
+      <dt>معیار FAIL</dt><dd>اگر پس از باز شدن حساب بانکی هم وصولی نشود، مشکل تقاضا نیست — انطباق قانونی است و باید به GATE 1 برگشت</dd>
+      <dt>مهلت</dt><dd>روز ۹۰</dd>
+    </dl></div></details>
+
+  <details class="gate"><summary><span class="gid">GATE 3</span> مقیاس‌پذیری تعمیرات <span class="tag t-info" style="margin-inline-start:auto;margin-inline-end:8px">آماده اندازه‌گیری</span></summary>
+    <div class="gbody"><dl>
+      <dt>معیار PASS</dt><dd>حداقل ۳۰٪ درآمد تکرارشونده · نرخ بازگشت مشتری ≥۴۰٪ · نرخ استفاده از نفر فنی ≥۵۵٪ · SLA ثبت‌شده</dd>
+      <dt>KPI</dt><dd>کار در ماه · نرخ تبدیل ویزیت به تعمیر · متوسط ارزش فاکتور · دوره وصول · نرخ تعمیر در نوبت اول</dd>
+      <dt>خط مبنا</dt><dd>پیش از هر ادعای «کاهش downtime»، حداقل ۲۰ کار پرداخت‌شده باید ثبت شده باشد</dd>
+      <dt>در صورت شکست</dt><dd>کاهش هزینه ثابت و تمرکز روی niche باریک‌تر</dd>
+    </dl></div></details>
+
+  <details class="gate"><summary><span class="gid">GATE 4</span> قطعات و تجهیزات <span class="tag t-warn" style="margin-inline-start:auto;margin-inline-end:8px">مشروط</span></summary>
+    <div class="gbody"><dl>
+      <dt>پیش‌شرط</dt><dd>فعالیت واردات در برکاء ثبت است و ۲۸/۱۲/۲۰۲۶ منقضی می‌شود — پیش از هر واردات تعیین تکلیف شود</dd>
+      <dt>معیار PASS</dt><dd>authorization یا قرارداد تأمین · حاشیه قطعه ≥۲۰٪ · وابستگی به هیچ تأمین‌کننده‌ای بیش از ۴۰٪ نباشد</dd>
+      <dt>در صورت شکست</dt><dd>فقط مدل واسطه‌گری و پیش‌سفارش، بدون انبار سنگین</dd>
+    </dl></div></details>
+
+  <details class="gate"><summary><span class="gid">GATE 5</span> کالیبراسیون <span class="tag t-bad" style="margin-inline-start:auto;margin-inline-end:8px">HOLD</span></summary>
+    <div class="gbody"><dl>
+      <dt>وضعیت</dt><dd>متوقف تا پاسخ کتبی DGSM — جزئیات در بخش بعد</dd>
+      <dt>مجاز</dt><dd>استعلام، مذاکره شراکت، طراحی پایلوت</dd>
+      <dt>غیرمجاز</dt><dd>هرگونه خرید تجهیز، اجاره فضا، یا وعده «گواهی قانونی» به مشتری</dd>
+    </dl></div></details>
+
+  <details class="gate"><summary><span class="gid">GATE 6</span> پروژه‌های بزرگ <span class="tag t-info" style="margin-inline-start:auto;margin-inline-end:8px">فرصت زودتر از تصور</span></summary>
+    <div class="gbody"><dl>
+      <dt>یافته کلیدی</dt><dd>پروژه ۳۵٬۰۰۰ ریالی وزارت بهداشت زیر آستانه ۲۵۰٬۰۰۰ ریال است و احتمالاً از مسیر کمیته تدارکات داخلی وزارتخانه می‌رود، نه PTLC. اگر تأیید شود، <strong>مسیر کوتاه‌تری به درآمد دارد از آنچه تصور می‌شد.</strong></dd>
+      <dt>وضعیت شاهد</dt><dd>فرض — منبع ثانویه · <strong>تأیید فوری لازم</strong></dd>
+      <dt>مانع باقی‌مانده</dt><dd>کد فعالیت پیمانکاری یا جابه‌جایی آزمایشگاه در CR وجود ندارد</dd>
+    </dl></div></details>
+
+  <details class="gate"><summary><span class="gid">GATE 7</span> مقیاس <span class="tag t-mut" style="margin-inline-start:auto;margin-inline-end:8px">باز نیست</span></summary>
+    <div class="gbody"><dl>
+      <dt>شرط باز شدن</dt><dd>عبور از گیت‌های ۱ تا ۴</dd>
+      <dt>چرا قفل است</dt><dd>پیش از آن، هر استخدام یا سرمایه‌گذاری اضافه یعنی افزایش نرخ سوخت بدون افزایش احتمال درآمد</dd>
+    </dl></div></details>
+
+  </div>
+</div>
+</section>
+<section style="background:var(--surface2)">
+<div class="wrap">
+  <div class="snum">۰۹</div>
+  <h2>آیا ماهوت باید وارد کالیبراسیون شود؟</h2>
+  <p class="sub">پاسخ کوتاه: <strong>نه به‌عنوان مالک آزمایشگاه، و نه حالا.</strong> اما بله به‌عنوان یک فرضیه راهبردی که باید ارزان اعتبارسنجی شود.</p>
+
+  <div class="call bad" style="margin-top:24px"><strong>سه نقشی که با هم اشتباه شده‌اند</strong>
+  سند تحقیقاتی کنتور آب، یک <em>برنامه ملی برای دولت عمان</em> طراحی کرده است. اما نقش ماهوت در آن هرگز تعریف نشده. سه نقش کاملاً متفاوت با سه اقتصاد کاملاً متفاوت ممکن است — و انتخاب نکردن بین آن‌ها، ریشه سردرگمی است.</div>
+
+  <div class="tblwrap">
+  <table>
+    <thead><tr><th>نقش ممکن</th><th>سرمایه لازم</th><th>ریسک</th><th>واقع‌بینی امروز</th></tr></thead>
+    <tbody>
+      <tr><td>مالک و اپراتور آزمایشگاه کالیبراسیون</td><td class="num">۳۵٬۰۰۰ تا ۲٬۱۲۶٬۰۰۰</td><td>بسیار بالا</td><td>خارج از مقیاس ماهوت</td></tr>
+      <tr class="hl"><td>شریک فنی یک آزمایشگاه معتبر موجود</td><td>عمدتاً نیروی انسانی</td><td>متوسط</td><td>قابل بررسی — مسیر ترجیحی</td></tr>
+      <tr class="hl"><td>مشاور و طراح برنامه برای نهاد دولتی</td><td>تقریباً صفر</td><td>کم</td><td>قابل اجرا فوراً</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="call warn"><strong>مقیاس را کنار هم بگذاریم</strong>
+  کل تنخواه مصرف‌شده ماهوت در ۹ ماه: <strong>۹٬۳۶۶ ریال</strong>. کمترین برآورد پایلوت سیار کالیبراسیون کنتور آب: <strong>۲۰٬۰۰۰ تا ۷۰٬۰۰۰ ریال</strong>. برآورد سند دیگر برای پایلوت تشخیصی: <strong>۱۸۵٬۰۰۰ ریال</strong>. یعنی حتی کوچک‌ترین ورود جدی، بین دو تا بیست برابر کل خرج تاکنون است — برای شرکتی که هنوز حساب بانکی فعال ندارد.
+  <details class="ev" style="margin-top:12px"><summary>مشاهده منبع</summary><div class="body">
+    <div><b>متناقض:</b> دو سند تحقیقاتی اعداد متفاوتی می‌دهند. Oman-Meter-Calibration-Program: پایلوت ۱۸۵٬۰۰۰ و میان‌مقیاس ۲٬۱۲۶٬۰۰۰. گزارش امکان‌سنجی: پایلوت سیار ۲۰k تا ۷۰k و آزمایشگاه باریک DN15–50 برابر ۳۵k تا ۱۲۰k.</div>
+    <div><b>هر دو در سطح «فرض» هستند</b> و هیچ‌کدام پشتوانه استعلام قیمت رسمی ندارند. پیش از هر تصمیم، حداقل سه RFQ لازم است.</div>
+  </div></details></div>
+
+  <h3 style="margin-top:34px;font-size:1.02rem">درخت گیت کالیبراسیون</h3>
+  <div class="branch">
+    <div class="brow"><div class="bi fail">C1</div><div><div class="bt">اختیار قانونی — <span style="color:var(--bad)">FAIL امروز</span></div><div class="bd">قانون ۱۷/۲۰۱۳ کالیبراسیون را از راستی‌آزمایی قانونی جدا می‌کند. راستی‌آزمایی فقط توسط DGSM یا نهاد مجازشده توسط آن. <strong>اعتباربخشی ISO 17025 به‌تنهایی اختیار بازرسی ایجاد نمی‌کند.</strong> CR ماهوت هیچ کد کالیبراسیون ندارد.</div></div></div>
+    <div class="barrow">▼</div>
+    <div class="brow"><div class="bi unk">C2</div><div><div class="bt">مشتری — نامشخص</div><div class="bd">چه کسی می‌پردازد؟ نما؟ APSR؟ سازنده کنتور؟ مشترک؟ خریدارِ پول‌دهنده در هیچ سندی تعیین نشده. ریسک تمرکز مشتری بسیار بالاست.</div></div></div>
+    <div class="barrow">▼</div>
+    <div class="brow"><div class="bi part">C3</div><div><div class="bt">تقاضا — جزئی</div><div class="bd">نما در ۲۰۲۵: ۷۵۹٬۱۶۷ حساب آب، نفوذ کنتور هوشمند ۹۹٫۳٪، و <strong>۳۰٬۸۲۲ مورد آزمون کنتور</strong>. تقاضا واقعی است. اما نرخ واقعی مردودی کنتور و سهم قابل برون‌سپاری، عدد عمومی ندارد.</div></div></div>
+    <div class="barrow">▼</div>
+    <div class="brow"><div class="bi fail">C4</div><div><div class="bt">استاندارد و اعتباربخشی — FAIL امروز</div><div class="bd">تصمیم MOCIIP ۳/۲۰۲۵: ایجاد آزمایشگاه بدون مجوز ممنوع. بررسی ۳۰ روز کاری، بازدید تا ۱۸۰ روز کاری. ISO/IEC 17025 ظرف یک سال الزامی. <strong>مدیر یا مسئول کیفیت عمانی ظرف حداکثر سه سال.</strong> برون‌سپاری حداکثر ۴۰٪ آزمون‌ها.</div></div></div>
+    <div class="barrow">▼</div>
+    <div class="brow"><div class="bi part">C5</div><div><div class="bt">صلاحیت انسانی — جزئی</div><div class="bd">مدل درست: استخدام متخصص مجرب و انتقال دانش به نیروی محلی طی سه تا چهار سال — نه آموزش از صفر. دو چیز آزمایشگاه‌های کالیبراسیون را متمایز می‌کند: استانداردهای بین‌المللی و نیروی انسانی.</div></div></div>
+    <div class="barrow">▼</div>
+    <div class="brow"><div class="bi part">C6</div><div><div class="bt">اقتصاد — مدل مقدماتی</div><div class="bd">سناریو پایه درآمد آزمون کنتور آب: ۵۵٬۴۷۶ ریال در سال (۱۵٪ سهم، ۱۲ ریال هر آزمون). بازگشت سرمایه در مدل میان‌مقیاس: <strong>۶٫۱ سال</strong>. عدم قطعیت ±۳۰٪ CAPEX.</div></div></div>
+    <div class="barrow">▼</div>
+    <div class="brow"><div class="bi part">C7</div><div><div class="bt">کوچک‌ترین پایلوت معتبر</div><div class="bd">سه مسیر بدون هیچ CAPEX: شراکت با آزمایشگاه معتبر موجود · برون‌سپاری کالیبراسیون با برند ماهوت · قرارداد مشاوره طراحی برنامه با APSR یا DGSM یا نما</div></div></div>
+    <div class="barrow">▼</div>
+    <div class="brow"><div class="bi fail">C8</div><div><div class="bt">تصمیم سرمایه‌گذاری: <span style="color:var(--bad)">HOLD + PARTNER</span></div><div class="bd">توقف کامل هرگونه CAPEX · حرکت فقط از مسیر شراکت · بازبینی پس از پاسخ کتبی DGSM و شناسایی خریدار</div></div></div>
+  </div>
+
+  <div class="call info"><strong>سه اصلاح که باید در سند کالیبراسیون انجام شود</strong>
+  یک — عنوان «برنامه ملی بازرسی» باید حذف شود؛ ماهوت اختیار بازرسی ندارد و این جزو اختیارات حاکمیتی است. عنوان درست: «برنامه ایجاد و راه‌اندازی استاندارد کالیبراسیون کنتورهای آب در صنعت عمان».
+  <br>دو — بررسی جدی گسترش دامنه از «کنتور آب» به «کالیبراسیون صنعتی»، که بازار بزرگ‌تر و مسیر ورود آسان‌تری دارد و به یک خریدار متمرکز وابسته نیست.
+  <br>سه — واژه‌های inspection و certification فقط در دامنه مجاز استفاده شوند. تا آن زمان، عبارت درست «service report» یا «calibration through accredited partner» است.
+  <details class="ev" style="margin-top:12px"><summary>مشاهده منبع</summary><div class="body">
+    <div><b>نظر کارشناس:</b> آقای ظهرابی — نقد بر عنوان و اختیار بازرسی</div>
+    <div><b>فکت بیرونی تأییدکننده:</b> قانون ۱۷/۲۰۱۳ عمان · تصمیم MOCIIP ۳/۲۰۲۵ · گزارش امکان‌سنجی ۲۰۲۶</div>
+    <div><b>نتیجه:</b> نقد کارشناس با منبع قانونی مستقل تأیید و دقیق‌تر شد.</div>
+  </div></details></div>
+
+  <div class="call bad"><strong>آنچه نباید انجام شود</strong>
+  کالیبراسیون کنتور آب نباید به آقای رضاییان به‌عنوان «فرصت بعدی ماهوت» ارائه شود. این کار تمرکز را از تنها مسیر درآمدی نزدیک — تعمیرات — برمی‌دارد و اعتبار کل سند را کاهش می‌دهد. کالیبراسیون یک <em>فرضیه در حال اعتبارسنجی</em> است، نه یک برنامه.</div>
+</div>
+</section>
+
+<section style="background:var(--surface2)">
+<div class="wrap">
+  <div class="snum">۱۰</div>
+  <h2>پاسخ صریح: آیا کالیبراسیون کنتور آب برای ماهوت سودآور خواهد بود؟</h2>
+  <p class="sub">این پرسش دو جواب دارد، چون دو کسب‌وکار کاملاً متفاوت زیر یک نام پنهان شده‌اند. جواب را جدا می‌دهیم.</p>
+
+  <div class="call bad" style="margin-top:24px"><strong>پاسخ ۱ — به‌عنوان مالک آزمایشگاه: نه. با هیچ سناریوی واقع‌بینانه‌ای جواب نمی‌دهد.</strong>
+  دلیلش یک عدد است: برای سربه‌سر شدن، ماهوت باید <strong>بین ۱۳ تا ۳۰ درصد از کل حجم آزمون کنتور آب کشور عمان</strong> را به‌دست بیاورد. نه ۱۳ تا ۳۰ درصد از بازار قابل دسترس — ۱۳ تا ۳۰ درصد از <em>کل</em> ۳۰٬۸۲۲ آزمونی که نما در سال ۲۰۲۵ انجام داده است.</div>
+
+  <h3 style="margin-top:30px;font-size:1.02rem">چرا این عدد کشنده است</h3>
+  <div class="tblwrap">
+  <table>
+    <thead><tr><th>ساختار هزینه</th><th>قیمت هر آزمون</th><th>آزمون لازم در سال</th><th>سهم لازم از کل حجم ملی</th><th>معادل روزانه</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="3">سبک — پایلوت سیار یا آزمایشگاه باریک<br><span style="color:var(--ink3);font-size:.85em">CAPEX ۵۰٬۰۰۰ · هزینه سالانه ۴۵٬۲۸۰</span></td><td class="num">۱۲ ریال</td><td class="num">۵٬۶۶۰</td><td class="num">۱۸٫۴٪</td><td class="num">۲۳ آزمون</td></tr>
+      <tr><td class="num">۱۸ ریال</td><td class="num">۳٬۴۸۳</td><td class="num">۱۱٫۳٪</td><td class="num">۱۴ آزمون</td></tr>
+      <tr><td class="num">۲۴ ریال</td><td class="num">۲٬۵۱۶</td><td class="num">۸٫۲٪</td><td class="num">۱۰ آزمون</td></tr>
+      <tr><td rowspan="3">پایه — آزمایشگاه ثابت DN15–50<br><span style="color:var(--ink3);font-size:.85em">CAPEX ۸۰٬۰۰۰ · هزینه سالانه ۷۲٬۸۲۰</span></td><td class="num">۱۲ ریال</td><td class="num">۹٬۱۰۲</td><td class="num">۲۹٫۵٪</td><td class="num">۳۶ آزمون</td></tr>
+      <tr><td class="num">۱۸ ریال</td><td class="num">۵٬۶۰۲</td><td class="num">۱۸٫۲٪</td><td class="num">۲۲ آزمون</td></tr>
+      <tr><td class="num">۲۴ ریال</td><td class="num">۴٬۰۴۶</td><td class="num">۱۳٫۱٪</td><td class="num">۱۶ آزمون</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <details class="ev"><summary>مشاهده مفروضات این مدل</summary><div class="body">
+    <div><b>حجم مرجع:</b> ۳۰٬۸۲۲ مورد Meters Testing در گزارش سالانه نما ۲۰۲۵ — <b>فکت بیرونی</b>. این تنها مخرج عمومی قابل اتکاست.</div>
+    <div><b>CAPEX:</b> از گزارش امکان‌سنجی — پایلوت سیار ۲۰k تا ۷۰k، آزمایشگاه باریک DN15–50 برابر ۳۵k تا ۱۲۰k. میانه بازه استفاده شد. <b>فرض [D]</b>.</div>
+    <div><b>OPEX سبک:</b> نیروی انسانی ۲۴٬۴۸۰ (متخصص خارجی ۹۰۰، مدیر کیفیت عمانی ۵۰۰، دو تکنسین ۳۲۰) + سایر ۱۵٬۸۰۰ (اجاره، انرژی، بازکالیبراسیون استاندارد مرجع، نگهداری، PT/ILC، بیمه، LIMS).</div>
+    <div><b>OPEX پایه:</b> نیروی انسانی ۳۴٬۶۲۰ + سایر ۳۰٬۲۰۰.</div>
+    <div><b>هزینه متغیر هر آزمون:</b> ۴ تا ۶ ریال — مصرفی، برق، جابه‌جایی، سهم نیروی مستقیم.</div>
+    <div><b>استهلاک:</b> CAPEX تقسیم بر ۱۰ سال.</div>
+    <div><b>الزامات نیروی انسانی از کجا آمد:</b> تصمیم MOCIIP ۳/۲۰۲۵ — مدیر فنی، مسئول کیفیت، کارکنان صالح، LIMS، بودجه عدم‌قطعیت، PT/ILC.</div>
+    <div><b>هشدار:</b> همه اعداد هزینه در سطح «فرض» هستند و باید با حداقل سه استعلام قیمت رسمی جایگزین شوند.</div>
+  </div></details>
+
+  <h3 style="margin-top:32px;font-size:1.02rem">حالا سناریوهای درآمد را روی همین هزینه‌ها بگذاریم</h3>
+  <div class="tblwrap">
+  <table>
+    <thead><tr><th>سناریو درآمد</th><th>درآمد سالانه</th><th>با ساختار سبک</th><th>با ساختار پایه</th></tr></thead>
+    <tbody>
+      <tr><td>محافظه‌کارانه — ۵٪ سهم، ۸ ریال</td><td class="num">۱۲٬۳۲۹</td><td class="num" style="color:var(--bad)">−۳۲٬۹۵۱</td><td class="num" style="color:var(--bad)">−۶۰٬۴۹۱</td></tr>
+      <tr><td>پایه — ۱۵٪ سهم، ۱۲ ریال</td><td class="num">۵۵٬۴۸۰</td><td class="num" style="color:var(--warn)">‎+۱۰٬۲۰۰<br><span style="font-size:.85em">بازگشت ۴٫۹ سال</span></td><td class="num" style="color:var(--bad)">−۱۷٬۳۴۰</td></tr>
+      <tr><td>صعودی — ۳۰٪ سهم، ۱۸ ریال</td><td class="num">۱۶۶٬۴۳۹</td><td class="num" style="color:var(--ok)">‎+۱۲۱٬۱۵۹</td><td class="num" style="color:var(--ok)">‎+۹۳٬۶۱۹</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="call bad"><strong>از پنج خانه این جدول، فقط دو خانه سود می‌دهند — و هر دو در سناریویی هستند که خودِ گزارش امکان‌سنجی می‌گوید «نباید base case شود».</strong>
+  سناریوی صعودی یعنی ماهوت ۳۰٪ از کل آزمون کنتور آب عمان را بگیرد: شرکتی با ۱۰۰٪ مالکیت خارجی، بدون اعتباربخشی ISO/IEC 17025، بدون اختیار راستی‌آزمایی قانونی، با صفر کارمند عمانی، و در برابر ۱۰۹ آزمایشگاه ثبت‌شده. این یک فرض نیست، یک آرزوست.
+  <br><br>و حتی سناریوی پایه — که تنها حالت سودده واقع‌بینانه است — بازگشت سرمایه <strong>۴٫۹ ساله</strong> می‌دهد، آن هم با فرض اینکه نما اصلاً بخواهد این کار را برون‌سپاری کند.</div>
+
+  <div class="call warn"><strong>و یک فرض که زیر همه این اعداد پنهان است</strong>
+  عدد ۳۰٬۸۲۲ در بخش <em>Asset Highlights</em> گزارش نما آمده — یعنی آزمون‌هایی که <strong>خودِ نما انجام داده است</strong>. هیچ‌جا نوشته نشده که نما بخشی از آن را برون‌سپاری می‌کند یا می‌خواهد بکند. کل مدل درآمدی روی فرضی بنا شده که هیچ سندی پشتش نیست: اینکه سهمی از این کار اصلاً برای فروش موجود است.
+  <br><br>اگر پاسخ نما «ما این کار را داخلی انجام می‌دهیم» باشد، <strong>هر سه سناریو صفر می‌شوند</strong> — نه کم، صفر.</div>
+
+  <h3 style="margin-top:32px;font-size:1.02rem">پاسخ ۲ — به‌عنوان شریک یا واسطه: بله، ولی کوچک</h3>
+  <p style="margin-top:10px">اگر ماهوت مالکیت تجاری را بگیرد و آزمون را به یک آزمایشگاه معتبر بسپارد، ساختار اقتصادی کاملاً عوض می‌شود: هزینه ثابت تقریباً صفر، CAPEX صفر، ریسک مقرراتی روی دوش شریک.</p>
+  <div class="grid g3" style="margin-top:16px">
+    <div class="stat"><span class="v mono">۰</span><span class="k">CAPEX لازم</span><div class="n">هیچ تجهیزی خریداری نمی‌شود</div></div>
+    <div class="stat"><span class="v mono">۳۰ تا ۴۰٪</span><span class="k">حاشیه تجاری معمول واسطه</span><div class="n">فرض — نیازمند مذاکره واقعی</div></div>
+    <div class="stat"><span class="v ok mono">۵ تا ۸ هزار</span><span class="k">سود سالانه در سناریو محافظه‌کارانه</span><div class="n">کوچک، اما بدون ریسک و بدون سرمایه</div></div>
+  </div>
+  <div class="call ok"><strong>این تنها شکل سودآور ورود به کالیبراسیون آب برای ماهوتِ امروز است.</strong>
+  عدد بزرگی نیست. اما سه چیز می‌خرد که با پول خریدنی نیستند: داده واقعی از حجم و قیمت بازار، یک رابطه کاری با نما، و اثبات اینکه گواهی این مسیر توسط شرکت خدماتی پذیرفته می‌شود. اگر بعد از دو سال این سه چیز اثبات شد، آن‌وقت بحث آزمایشگاه مالکیتی <em>با داده</em> باز می‌شود — نه با حدس.</div>
+
+  <h3 style="margin-top:32px;font-size:1.02rem">آیا به نتیجه می‌رسد؟ — پاسخ به بخش دوم پرسش</h3>
+  <p style="margin-top:10px">جدا از سودآوری، پرسش این است که آیا اصلاً <em>می‌شود</em>. پنج شرط باید هم‌زمان برقرار شود. امروز هیچ‌کدام برقرار نیست:</p>
+  <div class="branch" style="margin-top:16px">
+    <div class="brow"><div class="bi fail">۱</div><div><div class="bt">نما باید بخواهد برون‌سپاری کند</div><div class="bd">هیچ سندی وجود ندارد · <strong>احتمال: نامعلوم</strong> · تنها راه دانستن: یک RFI کتبی</div></div></div>
+    <div class="brow"><div class="bi fail">۲</div><div><div class="bt">DGSM باید اختیار را تفویض کند</div><div class="bd">قانون ۱۷/۲۰۱۳: راستی‌آزمایی فقط توسط DGSM یا نماینده مجاز · اعتباربخشی به‌تنهایی کافی نیست</div></div></div>
+    <div class="brow"><div class="bi fail">۳</div><div><div class="bt">اعتباربخشی ISO/IEC 17025 ظرف یک سال</div><div class="bd">تصمیم MOCIIP ۳/۲۰۲۵ · شناسایی بین‌المللی خود مرکز اعتباربخشی عمان در ژوئن ۲۰۲۶ هنوز در مسیر ارزیابی همتا بود</div></div></div>
+    <div class="brow"><div class="bi fail">۴</div><div><div class="bt">مدیر یا مسئول کیفیت عمانی ظرف سه سال</div><div class="bd">الزام قانونی · ماهوت امروز صفر کارمند عمانی دارد</div></div></div>
+    <div class="brow"><div class="bi fail">۵</div><div><div class="bt">تحمل مالی سه تا چهار ساله</div><div class="bd">ماهوت امروز حساب بانکی فعال ندارد و نرخ سوخت ماهانه‌اش را با تنخواه پوشش می‌دهد</div></div></div>
+  </div>
+
+  <div class="call info"><strong>جمع‌بندی در سه جمله</strong>
+  یک: <strong>ورود مالکیتی به کالیبراسیون کنتور آب برای ماهوت سودآور نخواهد بود</strong> — چون سربه‌سر آن به سهمی از بازار نیاز دارد که برای یک شرکت نوپای خارجی بدون اعتباربخشی، در دسترس نیست.
+  <br>دو: <strong>ورود شراکتی سودآور است ولی کوچک</strong> — و ارزش واقعی‌اش داده و رابطه است، نه سود.
+  <br>سه: <strong>پیش از پاسخ کتبی نما و DGSM، هیچ‌کدام از این اعداد تصمیم‌پذیر نیست.</strong> دو پرسش، دو نامه، احتمالاً کمتر از سی روز — و ارزان‌ترین راستی‌آزمایی ممکن برای تصمیمی که در بدترین حالت ده‌ها هزار ریال هزینه دارد.</div>
+
+  <div class="call warn"><strong>اگر می‌خواهید کالیبراسیون را جدی بگیرید، این را در نظر بگیرید</strong>
+  کالیبراسیون <em>صنعتی عمومی</em> — فشار، دما، جرم، ابعاد، گشتاور — نه به یک خریدار متمرکز وابسته است، نه زیر اندازه‌شناسی قانونی سختگیرانه کنتور آب قرار دارد، و مشتریانش دقیقاً همان آزمایشگاه‌هایی هستند که ماهوت الان تعمیرشان می‌کند. این پیشنهاد آقای ظهرابی هم بود. بازار کوچک‌تر نیست، مسیر ورودش کوتاه‌تر است — و مهم‌تر: <strong>روی همان مشتری‌ای سوار می‌شود که کسب‌وکار اصلی ماهوت دارد می‌سازد.</strong> این تنها مسیری است که کالیبراسیون را از یک شرط‌بندی به یک گسترش طبیعی تبدیل می‌کند.</div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+  <div class="snum">۱۱</div>
+  <h2>سه گزینه پیش روی مدیریت</h2>
+  <div class="grid g3" style="margin-top:26px">
+    <div class="opt">
+      <h4>الف — توقف</h4>
+      <ul>
+        <li>سرمایه‌گذاری اضافی: صفر</li>
+        <li>ریسک اضافی: صفر</li>
+        <li>مجوز شرکت با ۱۰۰٪ مالکیت خارجی و اعتبار تا ۲۰۲۸ از دست می‌رود</li>
+        <li>دسترسی ساخته‌شده به وزارتخانه‌ها از بین می‌رود</li>
+        <li>مطالبات موجود احتمالاً غیرقابل وصول می‌شوند</li>
+      </ul>
+      <div class="ftr">منطقی است اگر سهامداران نتوانند شش ماه نقدینگی را متعهد شوند.</div>
+    </div>
+    <div class="opt">
+      <h4>ب — نگه‌داشتن بدون تکمیل</h4>
+      <ul>
+        <li>هزینه ماهانه ادامه دارد</li>
+        <li>اما امکان صدور فاکتور قانونی همچنان صفر است</li>
+        <li>ویزای نفر فنی در معرض خطر تمدید‌نشدن</li>
+        <li>پروانه برکاء دسامبر ۲۰۲۶ منقضی می‌شود</li>
+        <li>اعتبار ساخته‌شده نزد وزارتخانه‌ها به‌مرور فرسوده می‌شود</li>
+      </ul>
+      <div class="ftr">پرهزینه‌ترین گزینه: پول می‌سوزد بدون آنکه امکان درآمد ایجاد شود.</div>
+    </div>
+    <div class="opt rec">
+      <h4>ج — تکمیل و اعتبارسنجی</h4>
+      <ul>
+        <li>باز کردن سه قفل GATE 1</li>
+        <li>وصول مطالبات موجود</li>
+        <li>فعال‌سازی تعمیرات به‌سمت ده کار در ماه</li>
+        <li>آزمون قطعات و تجهیزات</li>
+        <li>کالیبراسیون فقط از مسیر شراکت</li>
+        <li>سرمایه‌گذاری بیشتر فقط پس از عبور از گیت‌ها</li>
+      </ul>
+      <div class="ftr">≈ ۱۰٬۰۰۰ تا ۱۵٬۴۰۰ ریال برای شش ماه · سربه‌سر در حدود ده کار در ماه · شواهد از این گزینه پشتیبانی می‌کنند.</div>
+    </div>
+  </div>
+  <div class="call ok"><strong>چرا گزینه ج توصیه می‌شود — و در چه شرطی توصیه نمی‌شود</strong>
+  توصیه بر پایه سه چیز است: سربه‌سر در حدود ده کار در ماه قابل دستیابی است؛ قفل‌ها اداری‌اند نه بازاری؛ و دارایی حقوقی ساخته‌شده گران و بازتولیدنشدنی است.
+  <br><br>اما این توصیه <strong>مشروط</strong> است. اگر سهامداران نتوانند شش ماه نقدینگی را <em>یکجا و از پیش</em> متعهد شوند، گزینه درست ج نیست — الف است. تکمیل نیمه‌کاره، بدترین حالت ممکن است.</div>
+</div>
+</section>
+<section>
+<div class="wrap">
+  <div class="snum">۱۲</div>
+  <h2>۹۰ روز آینده</h2>
+  <p class="sub">ده اقدام، به‌ترتیب. هرکدام با مالک، خروجی و معیار تصمیم. جایی که مالک هنوز تعیین نشده، با TBD علامت خورده.</p>
+  <ol class="plan">
+    <li><div><div class="pt">استعلام از دفتر Sanad: آیا فاکتورهای معوق به‌دلیل حساب بانکی گیر کرده‌اند یا به‌دلیل عدم تطابق کد فعالیت؟</div>
+      <div class="pm">مالک: داتام · مهلت: روز ۷ · خروجی: پاسخ کتبی · <strong>معیار: پاسخ این سؤال ترتیب اقدام ۲ و ۳ را تعیین می‌کند</strong></div></div></li>
+    <li><div><div class="pt">افزودن کد فعالیت تعمیر تجهیزات اندازه‌گیری و آنالیتیکال به CR</div>
+      <div class="pm">مالک: داتام / Sanad · مهلت: روز ۳۰ · خروجی: CR اصلاح‌شده · معیار: کد ثبت و پروانه صادر شده</div></div></li>
+    <li><div><div class="pt">فعال‌سازی حساب بانکی — تعیین تاریخ قطعی سفر آقای رضاییان به عمان</div>
+      <div class="pm">مالک: رضاییان · مهلت: تاریخ <span class="blank">TBD</span> · خروجی: دسته‌چک · <strong>ریسک شماره یک سند: کل زنجیره به امضای منفرد ایشان قفل است</strong></div></div></li>
+    <li><div><div class="pt">دریافت عدد قطعی مطالبات و مجموع حقوق پرداختی خارج از تنخواه</div>
+      <div class="pm">مالک: خانم گیتی یکتا آرام · مهلت: روز ۱۰ · خروجی: صورت مطالبات · معیار: بدون این عدد، ROI قابل محاسبه نیست</div></div></li>
+    <li><div><div class="pt">شروع فرآیند استخدام کارمند عمانی و ثبت قرارداد در وزارت کار</div>
+      <div class="pm">مالک: داتام · مهلت: روز ۴۵ · خروجی: قرارداد ثبت‌شده · هزینه: ۳۴۱ ریال ماهانه · معیار: قفل اداری باز شده و ویزای نفر فنی ایمن شده</div></div></li>
+    <li><div><div class="pt">تبدیل اجاره‌نامه موقت به اجاره‌نامه رسمی به نام شرکت</div>
+      <div class="pm">مالک: رضاییان / داتام · مهلت: روز ۴۵ · خروجی: اجاره‌نامه ثبت‌شده · معیار: پیش‌شرط ثبت تأمین‌کننده</div></div></li>
+    <li><div><div class="pt">راستی‌آزمایی مسیر پروژه وزارت بهداشت: کمیته تدارکات داخلی یا PTLC؟</div>
+      <div class="pm">مالک: دکتر صادقی · مهلت: روز ۳۰ · خروجی: پاسخ رسمی · <strong>معیار: اگر IPC باشد، مسیر درآمد کوتاه‌تر از تصور است</strong></div></div></li>
+    <li><div><div class="pt">پیگیری وصول پیش‌فاکتور GTS و تبدیل RACS به پیشنهاد قیمت‌دار</div>
+      <div class="pm">مالک: TBD · مهلت: روز ۶۰ · خروجی: حداقل یک فاکتور وصول‌شده · معیار: GATE 2</div></div></li>
+    <li><div><div class="pt">اصلاح مدل مالی: بازمحاسبه سربه‌سر با هزینه ثابت واقعی و قیمت‌گذاری اثبات‌شده GTS</div>
+      <div class="pm">مالک: دکتر صادقی · مهلت: روز ۲۰ · خروجی: بیزینس‌پلن نسخه ۰۲ · <strong>معیار: پیش از هر ارائه به سهامداران انجام شود</strong></div></div></li>
+    <li><div><div class="pt">استعلام کتبی از DGSM درباره اختیار کالیبراسیون برای شرکت خصوصی با مالکیت خارجی</div>
+      <div class="pm">مالک: TBD · مهلت: روز ۹۰ · خروجی: پاسخ کتبی · معیار: تا پاسخ نیامده، هیچ ریالی برای کالیبراسیون خرج نشود</div></div></li>
+  </ol>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+  <div class="snum">۱۳</div>
+  <h2>جمع‌بندی مدیریتی</h2>
+  <div class="grid g2" style="margin-top:24px">
+    <div class="card"><h4>آنچه می‌دانیم <span class="tag t-ok">اثبات‌شده</span></h4>
+      <p>شرکت ثبت‌شده و فعال با ۱۰۰٪ مالکیت خارجی تا ۲۰۲۸ · توان فنی و گزارش‌دهی حرفه‌ای · قیمت واقعی یک کار حدود ۴۰۰ ریال · نرخ سوخت تنخواه حدود ۳۶۰ ریال در ماه · ۲۹٪ از هزینه‌های تصورشده اصلاً ماهوت نیست · سربه‌سر در حدود ده کار در ماه</p></div>
+    <div class="card"><h4>آنچه نمی‌دانیم <span class="tag t-warn">جای خالی</span></h4>
+      <p>مبلغ دقیق مطالبات · مجموع حقوق پرداختی خارج از تنخواه · تاریخ سفر آقای رضاییان · آیا فاکتورها به‌دلیل کد فعالیت گیر کرده‌اند · مسیر رسمی پروژه وزارت بهداشت · اختیار قانونی کالیبراسیون · هزینه دقیق اصلاح CR و ثبت PTLC</p></div>
+    <div class="card"><h4>آنچه باید اتفاق بیفتد <span class="tag t-info">۹۰ روز</span></h4>
+      <p>باز شدن سه قفل: حساب بانکی، کد فعالیت، کارمند عمانی · وصول حداقل یک فاکتور · اصلاح مدل مالی پیش از ارائه · نگه داشتن کالیبراسیون در حالت HOLD</p></div>
+    <div class="card"><h4>تصمیمی که از مدیریت خواسته می‌شود <span class="tag t-bad">همین جلسه</span></h4>
+      <p>آیا سهامداران <strong>شش ماه نقدینگی</strong> — بین ۱۰٬۰۰۰ تا ۱۵٬۴۰۰ ریال بسته به سناریو — را یکجا و از پیش متعهد می‌شوند؟ پاسخ بله یعنی گزینه ج. پاسخ نه یعنی گزینه الف. <strong>گزینه ب انتخاب نیست، تعویق است.</strong></p></div>
+  </div>
+
+  <div class="call info"><strong>یک نکته درباره خودِ این سند</strong>
+  این سند وعده نمی‌دهد که ماهوت «خیلی سودآور خواهد بود». چنین سندی جلوی کسی که پول داده و درآمد ندیده دوام نمی‌آورد. آنچه این سند نشان می‌دهد قوی‌تر است: پول خرج‌شده sunk است و ملاک تصمیم نیست؛ دارایی‌های ساخته‌شده واقعی و بازتولیدنشدنی‌اند؛ قفل‌ها اداری‌اند نه بازاری؛ و عدد سربه‌سر — ده کار در ماه — از دو مسیر مستقل تأیید شده است. تصمیم روی این چهار واقعیت گرفته می‌شود، نه روی خوش‌بینی.</div>
+
+  <div class="legend">
+    <span class="chip ok">فکت بیرونی</span>
+    <span class="chip">شواهد داخلی</span>
+    <span class="chip warn">ادعای مدیریت</span>
+    <span class="chip">نظر کارشناس</span>
+    <span class="chip warn">فرض</span>
+    <span class="chip bad">متناقض</span>
+    <span class="chip bad">جای خالی</span>
+  </div>
+</div>
+</section>
+
+<footer>
+<div class="wrap">
+  <p><strong>منابع اصلی.</strong> اسناد داخلی: گواهی ثبت شرکت ۱۶۳۷۲۷۱ · بیزینس‌پلن ماهوت · بیزینس مدل کانواس · گزارش بازدید GTS · پیش‌فاکتور GTS شماره ۰۰۱ · پروپوزال RACS · پروفایل شرکت · فایل تنخواه نوامبر ۲۰۲۵ تا جولای ۲۰۲۶ · سند بودجه ژوئن ۲۰۲۶.
+  اسناد تحقیقاتی: گزارش امکان‌سنجی MAHUT عمان ۲۷ آگوست ۲۰۲۶ · برنامه کالیبراسیون کنتور آب و برق عمان.
+  منابع بیرونی: قانون ۱۷/۲۰۱۳ عمان · تصمیم MOCIIP ۳/۲۰۲۵ · آیین‌نامه ۱۰۴/۲۰۲۲ · مرسوم سلطانی ۵۷/۲۰۲۵ · صفحه رسمی Agilent عمان · گزارش سالانه نما · وزارت تجارت و صنعت و ترویج سرمایه‌گذاری عمان · مقررات حداقل دستمزد و Omanisation.</p>
+  <p style="margin-top:16px">نظرات کارشناسی: آقای ظهرابی (اختیار بازرسی و مدل انتقال دانش) · آقای داتام (واقعیت‌های اداری و هزینه‌ای عمان).</p>
+  <p style="margin-top:16px;color:var(--ink3)">این سند بر پایه اسناد در دسترس تا ۲۷ آگوست ۲۰۲۶ تهیه شده و جایگزین نظر وکیل عمانی یا پاسخ کتبی نهادهای رسمی نیست. موارد علامت‌خورده با «جای خالی» پس از جلسه مالی و استعلام‌ها به‌روزرسانی می‌شوند.</p>
+</div>
+</footer>
+</body>
+</html>
